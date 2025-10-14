@@ -52,12 +52,19 @@ class Dev(Configuration):
         'django.contrib.contenttypes',
         'django.contrib.sessions',
         'django.contrib.messages',
+        'django.contrib.sites',
         'django.contrib.staticfiles',
         'blango_auth',
         'blog',
         'crispy_forms',
         'crispy_bootstrap5',
         'debug_toolbar',
+        
+        # Allauth
+        'allauth',                  # ← base app
+        'allauth.account',          # ← REQUIRED
+        'allauth.socialaccount',    # ← REQUIRED if you’ll use social login
+        'allauth.socialaccount.providers.google',  # ← provider
     ]
 
     MIDDLEWARE = [
@@ -205,6 +212,24 @@ class Dev(Configuration):
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
     ACCOUNT_ACTIVATION_DAYS = 7
+
+    SITE_ID = 1
+
+    ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+    ACCOUNT_EMAIL_REQUIRED = True
+    ACCOUNT_USERNAME_REQUIRED = False
+    ACCOUNT_AUTHENTICATION_METHOD = "email"
+
+    AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+    ]
+
+    # Tell Django that the proxy passes the original scheme
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+    # Make allauth build absolute URLs with https
+    ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 
 class Prod(Dev):
     DEBUG = False
