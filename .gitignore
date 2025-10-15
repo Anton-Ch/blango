@@ -1,8 +1,6 @@
 
 # Local DB
-*.sqlite3
 
 # Ignore local artifacts
-*.sqlite3
 __pycache__/
 *.pyc
