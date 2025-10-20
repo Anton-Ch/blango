@@ -61,6 +61,7 @@ class Dev(Configuration):
         'debug_toolbar',
         'rest_framework',
         'rest_framework.authtoken',
+        'drf_yasg',
         
         # Allauth
         'allauth',                  # ← base app
@@ -242,6 +243,13 @@ class Dev(Configuration):
 
     # Make allauth build absolute URLs with https
     ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+
+    SWAGGER_SETTINGS = {
+        "SECURITY_DEFINITIONS": {
+            "Token": {"type": "apiKey", "name": "Authorization", "in": "header"},
+            "Basic": {"type": "basic"},
+        }
+    }    
 
 class Prod(Dev):
     DEBUG = False
