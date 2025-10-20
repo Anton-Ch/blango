@@ -4,10 +4,10 @@ from drf_yasg.views import get_schema_view
 import os
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework.authtoken import views
-from blog.api.views import UserDetail
+from blog.api.views import PostViewSet, UserDetail, TagViewSet
 
-from blog.api.views import PostList, PostDetail
-from rest_framework.urlpatterns import format_suffix_patterns
+from rest_framework.routers import DefaultRouter
+
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -20,8 +20,6 @@ schema_view = get_schema_view(
 )
 
 api_urlpatterns = [
-    path("posts/", PostList.as_view(), name="api_post_list"),
-    path("posts/<int:pk>", PostDetail.as_view(), name="api_post_detail"),
     path("users/<str:email>", UserDetail.as_view(), name="api_user_detail"),
 
 ]
@@ -29,6 +27,13 @@ api_urlpatterns = [
 # important to format suffix before swagger part
 # because it should be not formatted
 api_urlpatterns = format_suffix_patterns(api_urlpatterns )
+
+# instantiate the router and register the viewset for Tags
+router = DefaultRouter()
+# registering Tags will add /api/v1/tags
+router.register("tags", TagViewSet)
+# registering Posts will add /api/v1/posts
+router.register("posts", PostViewSet)
 
 urlpatterns = [
     path("auth/", include("rest_framework.urls")),
@@ -46,6 +51,8 @@ urlpatterns = [
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
+    # adding created router
+    path("", include(router.urls)),
 ]
 
 # Add the API routes last
