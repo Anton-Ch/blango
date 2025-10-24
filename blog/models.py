@@ -7,6 +7,11 @@ from django.contrib.contenttypes.fields import GenericRelation
 class Tag(models.Model):
     value = models.TextField(max_length=100, unique=True)
 
+    # set the default ordering to value so the tags are retrieved in alphabetical order.
+    class Meta:
+        ordering = ["value"]
+
+
     def __str__(self):
         return self.value
 
