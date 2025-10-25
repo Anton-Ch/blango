@@ -1,29 +1,38 @@
-// Define what happens when the Promise succeeds
-function resolvedCallback(data) {
-  console.log('Resolved with data ' + data)
-}
-
-// Define what happens when the Promise fails
-function rejectedCallback(message) {
-  console.log('Rejected with message ' + message)
-}
-
-// Define the Promise-returning function
-const lazyAdd = function(a, b) {
-  const doAdd = (resolve, reject) => {
-    if (typeof a !== "number" || typeof b !== "number") {
-      reject("a and b must both be numbers")
-    } else {
-      const sum = a + b
-      resolve(sum)
-    }
+// 1️⃣ Define the component
+class ClickButton extends React.Component {
+  state = {
+    wasClicked: false
   }
 
-  return new Promise(doAdd)
+  handleClick() {
+    this.setState({ wasClicked: true })
+  }
+
+  render() {
+    let buttonText
+
+    if (this.state.wasClicked)
+      buttonText = 'Clicked!'
+    else
+      buttonText = 'Click Me'
+
+    return React.createElement(
+      'button',
+      {
+        className: 'btn btn-primary mt-2',
+        onClick: () => {
+          this.handleClick()
+        }
+      },
+      buttonText
+    )
+  }
 }
 
-// Create and use Promises
-const p = lazyAdd(3, 4)
-p.then(resolvedCallback, rejectedCallback)
+// 2️⃣ Mount the component into the DOM
+const domContainer = document.getElementById('react_root')
 
-lazyAdd("nan", "alsonan").then(resolvedCallback, rejectedCallback)
+ReactDOM.render(
+  React.createElement(ClickButton),
+  domContainer
+)
