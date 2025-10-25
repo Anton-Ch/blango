@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericRelation
+from versatileimagefield.fields import VersatileImageField, PPOIField
 
 class Tag(models.Model):
     value = models.TextField(max_length=100, unique=True)
@@ -35,6 +36,13 @@ class Post(models.Model):
     content = models.TextField()
     tags = models.ManyToManyField(Tag, related_name="posts")
     comments = GenericRelation(Comment)
+    hero_image = VersatileImageField(
+        upload_to="hero_images",  # directory inside MEDIA_ROOT
+        ppoi_field="ppoi",        # links to PPOI field for cropping
+        null=True,
+        blank=True
+    )
+    ppoi = PPOIField(null=True, blank=True)  # stores primary point of interest
 
     def __str__(self):
         return self.title

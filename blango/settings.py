@@ -64,6 +64,7 @@ class Dev(Configuration):
         'rest_framework.authtoken',
         'drf_yasg',
         'django_filters',
+        'versatileimagefield',
         
         # Allauth
         'allauth',                  # ← base app
@@ -280,6 +281,9 @@ class Dev(Configuration):
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     }
+
+    MEDIA_ROOT = BASE_DIR / "media"  # where uploaded files are stored
+    MEDIA_URL = "/media/"             # base URL to serve media
 
 class Prod(Dev):
     DEBUG = False
